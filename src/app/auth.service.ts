@@ -6,10 +6,21 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private api="http://127.0.0.1:3000/users/"
+  private api="https://localhost:3000/users/"
   private loggedUser:any
   private userSub= new Subject()
+  // private httpOptions={
+  //   headers: new HttpHeaders(
+  //     {'Content-Type':"application/json"}
+  //   )
+  //   ,withCredentials:true   
+
+  // }
+  private httpOptions={
+   withCredentials:true
+  }
   constructor(private http:HttpClient) { }
+  
 
   getLoggedUser(){
     return this.userSub
@@ -20,7 +31,10 @@ export class AuthService {
       email:email,
       password:password
     }
-    this.http.post(this.api+"signin", body).subscribe(
+   
+
+
+    this.http.post(this.api+"signin", body, this.httpOptions).subscribe(
       {
         next:(res)=>{
           console.log(res)
@@ -56,8 +70,8 @@ export class AuthService {
 
   getSecret(){
     if (this.loggedUser){
-      let headers=new HttpHeaders({"Authorization":this.loggedUser?.accessToken||"probaToken"})
-      this.http.get(this.api+"secretdata", {headers}).subscribe(
+      // let headers=new HttpHeaders({"Authorization":this.loggedUser?.accessToken||"probaToken"})
+      this.http.get(this.api+"secretdata", this.httpOptions).subscribe(
         {
           next:(res)=>console.log(res),
           error:(err)=>console.log(err)
