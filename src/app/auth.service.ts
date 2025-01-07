@@ -50,10 +50,7 @@ export class AuthService {
     )
   }
 
-  logout(){
-          this.loggedUser=null
-          this.userSub.next(this.loggedUser)
-  }
+  
 
   signUp(email:string, password:string){
     let body ={
@@ -79,6 +76,26 @@ export class AuthService {
       )
   }
   }
+
+  logout(){
+    this.http.post(this.api+"logout",{}, this.httpOptions).subscribe(
+      {
+        next:(res)=>{
+          console.log(res)
+          this.loggedUser=null
+          this.userSub.next(this.loggedUser)
+        },
+        error:(err)=>console.log(err)
+      }
+    )
+  }
+//   logout(){
+//     this.loggedUser=null
+//     this.userSub.next(this.loggedUser)
+// }
+
+
+
 
 
 }
